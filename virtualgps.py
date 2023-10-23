@@ -114,8 +114,10 @@ if __name__ == '__main__':
 			raise KeyboardInterrupt
 	else:
 		# if config does not exist exit
-		raise KeyboardInterrupt
-
+		# raise KeyboardInterrupt
+		latitude = convert_to_sexagesimal("0")
+		longitude = convert_to_sexagesimal("0")
+		elevation = float(convert_to_sexagesimal("0"))
 	# use command line arguments only
 	if args.lat:
 		latitude = convert_to_sexagesimal(args.lat)
@@ -131,7 +133,7 @@ if __name__ == '__main__':
 	pty = os.ttyname(slave)
 
 	# set permissions for gpsd
-	os.chmod(pty, 0o444)
+	os.chmod(pty, 0o666)
 
 	# on some systems apparmor allows for gpsfake only /tmp/gpsfake-*.sock
 	# we need to handle this by adding pty device to apparmor configuration
@@ -140,7 +142,9 @@ if __name__ == '__main__':
 
 	# add device to gpsd
 	try:
-		os.system("sudo gpsdctl add %s" % pty)
+		pass
+		# create gpsd process
+		#os.system("sudo gpsdctl add %s" % pty)
 	except:
 		print("Error adding %s device to gpsd server", pty)
 		sys.exit()
@@ -218,7 +222,8 @@ if __name__ == '__main__':
 			nmea += "$GPGSV,2,1,08,05,18,052,48,16,22,303,00,18,63,159,44,21,62,175,49*7A\n"
 			nmea += "$GPGSV,2,2,08,25,24,128,40,26,53,299,00,29,54,061,51,31,43,231,00*73"
 			#nmea += "$PGRME,38.9,M,40.2,M,55.9,M*13\n"
-			#nmea += "$GPGLL,3412.717,N,01138.281,E,133719,A*2C"
+
+			# nmea += "$GPGLL,3412.717,N,01138.281,E,133719,A*2C"
 
 			for sentence in nmea.split("\n"):
 				sentence += "\n"
